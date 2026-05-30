@@ -18,23 +18,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("users")
-public class UserController {
+@RequestMapping("auth")
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
 
-    public UserController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userService = userService;
     }
 
     @PostMapping("register")
-    public ResponseEntity<ApiResponse<User>> createUser(@Valid @RequestBody UserDto user) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@Valid @RequestBody UserDto user) {
         User createdUser = this.userService.createUser(user);
-        return new ResponseEntity<>(new ApiResponse<>(true, "User created successfully", createdUser), HttpStatus.CREATED);
+
+        UserResponseDto response = new UserResponseDto(
+                createdUser.getId(),
+                createdUser.getFullName(),
+                createdUser.getEmail(),
+                createdUser.getRole(),
+                createdUser.getUpiId(),
+                createdUser.getPhoneNumber(),
+                createdUser.getBalance(),
+                createdUser.isActive()
+        );
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(true, "User registered successfully", response),
+                HttpStatus.CREATED
+        );
     }
 
     @PostMapping("login")
@@ -52,9 +67,13 @@ public class UserController {
                 user.getFullName(),
                 user.getEmail(),
                 user.getRole(),
+                user.getUpiId(),
+                user.getPhoneNumber(),
+                user.getBalance(),
                 user.isActive(),
                 user.isDeleted(),
-                token);
+                token
+        );
 
         return ResponseEntity.ok(new ApiResponse<>(true, "Login successful", userResponse));
     }

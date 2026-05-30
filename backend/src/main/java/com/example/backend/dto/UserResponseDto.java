@@ -1,10 +1,15 @@
 package com.example.backend.dto;
 
-public record UserResponseDto(
+import java.math.BigDecimal;
+
+public record UserResponseDto (
         Long id,
-        String name,
+        String fullName,
         String email,
         String role,
-        Boolean isActive
+        String upiId,
+        String phoneNumber,
+        BigDecimal balance,
+        boolean isActive
 ) {
 }

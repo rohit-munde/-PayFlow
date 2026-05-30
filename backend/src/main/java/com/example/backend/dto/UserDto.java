@@ -1,9 +1,8 @@
 package com.example.backend.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 
 public class UserDto {
 
@@ -23,6 +22,15 @@ public class UserDto {
             message = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
     )
     private String password;
+
+    @NotBlank(message = "UPI ID is required")
+    private String upiId;
+
+    @NotBlank(message = "Phone number is required")
+    private String phoneNumber;
+
+    @DecimalMin(value = "0.0", inclusive = true)
+    private BigDecimal balance;
 
     public UserDto() {}
 
@@ -55,5 +63,29 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUpiId() {
+        return upiId;
+    }
+
+    public void setUpiId(String upiId) {
+        this.upiId = upiId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 }

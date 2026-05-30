@@ -27,7 +27,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
                 .authorizeHttpRequests(authoriseRequests -> authoriseRequests
-                        .requestMatchers("/users/register", "/users/login", "/forgot-password", "/reset-password", "/error", "/h2-console/**").permitAll()
+                        .requestMatchers(
+                                "/auth/register",
+                                "/auth/login",
+                                "/forgot-password",
+                                "/reset-password",
+                                "/error",
+                                "/h2-console/**"
+                                ).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
